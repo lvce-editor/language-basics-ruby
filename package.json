@@ -1,0 +1,31 @@
+{
+  "name": "builtin.language-basics-ruby",
+  "version": "0.0.0-dev",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "test-syntax-highlighting",
+    "dev": "node ./node_modules/@lvce-editor/server/bin/server.js ./test/cases --only-extension=."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@lvce-editor/package-extension": "^0.0.5",
+    "@lvce-editor/server": "^0.11.8",
+    "@lvce-editor/test-syntax-highlighting": "^0.0.14",
+    "prettier": "^2.8.1",
+    "typescript": "^4.9.4"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
+  },
+  "test-tokenize": {
+    "skip": [
+      "duplicate-comma",
+      "invalid-number-after-boolean"
+    ]
+  }
+}

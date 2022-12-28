@@ -1,0 +1,12 @@
+{
+  "id": "builtin.language-basics-ruby",
+  "name": "Language Basics Ruby",
+  "description": "Provides syntax highlighting and bracket matching in Ruby files.",
+  "languages": [
+    {
+      "id": "ruby",
+      "extensions": [".rb"],
+      "tokenize": "src/tokenizeRuby.js"
+    }
+  ]
+}
