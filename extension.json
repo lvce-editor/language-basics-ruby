@@ -5,7 +5,43 @@
   "languages": [
     {
       "id": "ruby",
-      "extensions": [".rb"],
+      "extensions": [
+        ".rb",
+        ".rbx",
+        ".rjs",
+        ".gemspec",
+        ".rake",
+        ".ru",
+        ".erb",
+        ".podspec",
+        ".rbi"
+      ],
+      "fileNames": [
+        "rakefile",
+        "gemfile",
+        "guardfile",
+        "podfile",
+        "capfile",
+        "cheffile",
+        "hobofile",
+        "vagrantfile",
+        "appraisals",
+        "rantfile",
+        "berksfile",
+        "berksfile.lock",
+        "thorfile",
+        "puppetfile",
+        "dangerfile",
+        "brewfile",
+        "fastfile",
+        "appfile",
+        "deliverfile",
+        "matchfile",
+        "scanfile",
+        "snapfile",
+        "gymfile"
+      ],
+      "firstLine": "^#!\\s*/.*\\bruby\\b",
       "tokenize": "src/tokenizeRuby.js"
     }
   ]
