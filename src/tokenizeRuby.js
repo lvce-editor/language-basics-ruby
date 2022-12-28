@@ -3,7 +3,8 @@
  */
 export const State = {
   TopLevelContent: 1,
-  InsideString: 2,
+  InsideDoubleQuoteString: 2,
+  InsideSingleQuoteString: 3,
 }
 
 export const StateMap = {
@@ -49,12 +50,14 @@ const RE_COMMA = /^,/
 const RE_ANYTHING = /^.+/s
 const RE_ANYTHING_UNTIL_CLOSE_BRACE = /^[^\}]+/
 const RE_QUOTE_DOUBLE = /^"/
+const RE_QUOTE_SINGLE = /^'/
 const RE_STRING_DOUBLE_QUOTE_CONTENT = /^[^"]+/
+const RE_STRING_SINGLE_QUOTE_CONTENT = /^[^']+/
 const RE_KEYWORD =
   /^(?:while|when|var|val|typeof|typealias|try|true|throw|this|super|return|package|object|null|is|interface|in|if|fun|for|false|else|do|continue|class|break|as)\b/
 
-const RE_VARIABLE_NAME = /^[a-zA-Z]+/
-const RE_PUNCTUATION = /^[:,;\{\}\[\]\.=\(\)<>]/
+const RE_VARIABLE_NAME = /^[a-zA-Z\_]+/
+const RE_PUNCTUATION = /^[:,;\{\}\[\]\.=\(\)<>\?]/
 const RE_NUMERIC = /^\d+/
 const RE_LINE_COMMENT = /^#.*/s
 
@@ -99,7 +102,10 @@ export const tokenizeLine = (line, lineState) => {
           state = State.TopLevelContent
         } else if ((next = part.match(RE_QUOTE_DOUBLE))) {
           token = TokenType.PunctuationString
-          state = State.InsideString
+          state = State.InsideDoubleQuoteString
+        } else if ((next = part.match(RE_QUOTE_SINGLE))) {
+          token = TokenType.Punctuation
+          state = State.InsideSingleQuoteString
         } else if ((next = part.match(RE_LINE_COMMENT))) {
           token = TokenType.Comment
           state = State.TopLevelContent
@@ -108,13 +114,24 @@ export const tokenizeLine = (line, lineState) => {
           throw new Error('no')
         }
         break
-      case State.InsideString:
+      case State.InsideDoubleQuoteString:
         if ((next = part.match(RE_QUOTE_DOUBLE))) {
           token = TokenType.PunctuationString
           state = State.TopLevelContent
         } else if ((next = part.match(RE_STRING_DOUBLE_QUOTE_CONTENT))) {
           token = TokenType.String
-          state = State.InsideString
+          state = State.InsideDoubleQuoteString
+        } else {
+          throw new Error('no')
+        }
+        break
+      case State.InsideSingleQuoteString:
+        if ((next = part.match(RE_QUOTE_SINGLE))) {
+          token = TokenType.PunctuationString
+          state = State.TopLevelContent
+        } else if ((next = part.match(RE_STRING_SINGLE_QUOTE_CONTENT))) {
+          token = TokenType.String
+          state = State.InsideSingleQuoteString
         } else {
           throw new Error('no')
         }
