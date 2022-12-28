@@ -22,6 +22,7 @@ export const TokenType = {
   Numeric: 6,
   Punctuation: 7,
   VariableName: 8,
+  Comment: 9,
 }
 
 export const TokenMap = {
@@ -33,6 +34,7 @@ export const TokenMap = {
   [TokenType.Numeric]: 'Numeric',
   [TokenType.Punctuation]: 'Punctuation',
   [TokenType.VariableName]: 'VariableName',
+  [TokenType.Comment]: 'Comment',
 }
 
 const RE_SELECTOR = /^[\.a-zA-Z\d\-\:>]+/
@@ -54,6 +56,7 @@ const RE_KEYWORD =
 const RE_VARIABLE_NAME = /^[a-zA-Z]+/
 const RE_PUNCTUATION = /^[:,;\{\}\[\]\.=\(\)<>]/
 const RE_NUMERIC = /^\d+/
+const RE_LINE_COMMENT = /^#.*/s
 
 export const initialLineState = {
   state: State.TopLevelContent,
@@ -97,6 +100,9 @@ export const tokenizeLine = (line, lineState) => {
         } else if ((next = part.match(RE_QUOTE_DOUBLE))) {
           token = TokenType.PunctuationString
           state = State.InsideString
+        } else if ((next = part.match(RE_LINE_COMMENT))) {
+          token = TokenType.Comment
+          state = State.TopLevelContent
         } else {
           part //?
           throw new Error('no')
