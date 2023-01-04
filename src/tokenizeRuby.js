@@ -5,6 +5,8 @@ export const State = {
   TopLevelContent: 1,
   InsideDoubleQuoteString: 2,
   InsideSingleQuoteString: 3,
+  InsideBackTickQuoteString: 4,
+  InsideEof: 5,
 }
 
 export const StateMap = {
@@ -51,19 +53,24 @@ const RE_ANYTHING = /^.+/s
 const RE_ANYTHING_UNTIL_CLOSE_BRACE = /^[^\}]+/
 const RE_QUOTE_DOUBLE = /^"/
 const RE_QUOTE_SINGLE = /^'/
+const RE_QUOTE_BACKTICK = /^`/
 const RE_STRING_DOUBLE_QUOTE_CONTENT = /^[^"]+/
 const RE_STRING_SINGLE_QUOTE_CONTENT = /^[^']+/
+const RE_STRING_BACKTICK_QUOTE_CONTENT = /^[^`]+/
 const RE_KEYWORD =
   /^(?:while|when|var|val|typeof|typealias|try|true|throw|this|super|return|package|object|null|is|interface|in|if|fun|for|false|else|do|continue|class|break|as)\b/
 
-const RE_VARIABLE_NAME = /^[a-zA-Z\_]+/
-const RE_PUNCTUATION = /^[:,;\{\}\[\]\.=\(\)<>\?]/
+const RE_VARIABLE_NAME = /^[a-zA-Z\_\$]+/
+const RE_PUNCTUATION = /^[:,;\{\}\[\]\.=\(\)<>\-\|\&\+\?\!\%\*\/\@]/
 const RE_NUMERIC = /^\d+/
 const RE_LINE_COMMENT = /^#.*/s
+const RE_EOF_START = /^<<\-?\s*([\w\!]+)/
+const RE_EOF_CONTENT = /.*/s
 
 export const initialLineState = {
   state: State.TopLevelContent,
   tokens: [],
+  stringEnd: '',
 }
 
 export const isEqualLineState = (lineStateA, lineStateB) => {
@@ -81,6 +88,7 @@ export const tokenizeLine = (line, lineState) => {
   let tokens = []
   let token = TokenType.None
   let state = lineState.state
+  let stringEnd = lineState.stringEnd
   while (index < line.length) {
     const part = line.slice(index)
     switch (state) {
@@ -91,6 +99,10 @@ export const tokenizeLine = (line, lineState) => {
         } else if ((next = part.match(RE_KEYWORD))) {
           token = TokenType.Keyword
           state = State.TopLevelContent
+        } else if ((next = part.match(RE_EOF_START))) {
+          token = TokenType.Punctuation
+          state = State.InsideEof
+          stringEnd = next[1]
         } else if ((next = part.match(RE_PUNCTUATION))) {
           token = TokenType.Punctuation
           state = State.TopLevelContent
@@ -106,10 +118,14 @@ export const tokenizeLine = (line, lineState) => {
         } else if ((next = part.match(RE_QUOTE_SINGLE))) {
           token = TokenType.Punctuation
           state = State.InsideSingleQuoteString
+        } else if ((next = part.match(RE_QUOTE_BACKTICK))) {
+          token = TokenType.Punctuation
+          state = State.InsideBackTickQuoteString
         } else if ((next = part.match(RE_LINE_COMMENT))) {
           token = TokenType.Comment
           state = State.TopLevelContent
         } else {
+          console.log({ part })
           part //?
           throw new Error('no')
         }
@@ -136,6 +152,28 @@ export const tokenizeLine = (line, lineState) => {
           throw new Error('no')
         }
         break
+      case State.InsideBackTickQuoteString:
+        if ((next = part.match(RE_QUOTE_BACKTICK))) {
+          token = TokenType.PunctuationString
+          state = State.TopLevelContent
+        } else if ((next = part.match(RE_STRING_BACKTICK_QUOTE_CONTENT))) {
+          token = TokenType.String
+          state = State.InsideBackTickQuoteString
+        } else {
+          throw new Error('no')
+        }
+        break
+      case State.InsideEof:
+        if ((next = part.match(stringEnd))) {
+          token = TokenType.Punctuation
+          state = State.TopLevelContent
+        } else if ((next = part.match(RE_EOF_CONTENT))) {
+          token = TokenType.String
+          state = State.InsideEof
+        } else {
+          throw new Error('no')
+        }
+        break
       default:
         throw new Error('no')
     }
@@ -146,5 +184,6 @@ export const tokenizeLine = (line, lineState) => {
   return {
     state,
     tokens,
+    stringEnd,
   }
 }
