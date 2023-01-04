@@ -100,6 +100,8 @@ VariableName
 Whitespace
 PunctuationString
 String
+String
+String
 PunctuationString
 NewLine
 Whitespace
@@ -424,6 +426,9 @@ Whitespace
 VariableName
 Whitespace
 PunctuationString
+String
+String
+String
 String
 PunctuationString
 NewLine
@@ -975,6 +980,8 @@ VariableName
 Whitespace
 PunctuationString
 String
+String
+String
 PunctuationString
 Whitespace
 Punctuation
@@ -984,6 +991,7 @@ Punctuation
 VariableName
 Punctuation
 PunctuationString
+String
 String
 PunctuationString
 Punctuation
