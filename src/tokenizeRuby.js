@@ -30,6 +30,7 @@ export const TokenType = {
   LanguageConstant: 11,
   KeywordReturn: 12,
   Regex: 13,
+  KeywordImport: 14,
 }
 
 export const TokenMap = {
@@ -46,6 +47,7 @@ export const TokenMap = {
   [TokenType.LanguageConstant]: 'LanguageConstant',
   [TokenType.KeywordReturn]: 'KeywordReturn',
   [TokenType.Regex]: 'Regex',
+  [TokenType.KeywordImport]: 'KeywordImport',
 }
 
 const RE_SELECTOR = /^[\.a-zA-Z\d\-\:>]+/
@@ -66,7 +68,7 @@ const RE_STRING_DOUBLE_QUOTE_CONTENT = /^[^"\\]+/
 const RE_STRING_SINGLE_QUOTE_CONTENT = /^[^'\\]+/
 const RE_STRING_BACKTICK_QUOTE_CONTENT = /^[^`]+/
 const RE_KEYWORD =
-  /^(?:alias|and|begin|break|case|class|def|defined\?|do|else|elsif|end|ensure|false|for|if|in|module|next|nil|not|or|redo|rescue|retry|return|self|super|then|true|undef|unless|until|when|while|yield)\b/
+  /^(?:alias|and|begin|break|case|class|def|defined\?|do|else|elsif|end|ensure|false|for|if|in|module|next|nil|not|or|redo|require|rescue|retry|return|self|super|then|true|undef|unless|until|when|while|yield)\b/
 const RE_VARIABLE_NAME = /^[a-zA-Z\_\$]+/
 const RE_PUNCTUATION = /^[:,;\{\}\[\]\.=\(\)<>\-\|\&\+\?\!\%\*\/\@]/
 const RE_NUMERIC = /^\d+/
@@ -128,6 +130,9 @@ export const tokenizeLine = (line, lineState) => {
               break
             case 'return':
               token = TokenType.KeywordReturn
+              break
+            case 'require':
+              token = TokenType.KeywordImport
               break
             default:
               token = TokenType.Keyword
