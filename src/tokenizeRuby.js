@@ -26,6 +26,9 @@ export const TokenType = {
   Punctuation: 7,
   VariableName: 8,
   Comment: 9,
+  KeywordControl: 10,
+  LanguageConstant: 11,
+  KeywordReturn: 12,
 }
 
 export const TokenMap = {
@@ -38,6 +41,9 @@ export const TokenMap = {
   [TokenType.Punctuation]: 'Punctuation',
   [TokenType.VariableName]: 'VariableName',
   [TokenType.Comment]: 'Comment',
+  [TokenType.KeywordControl]: 'KeywordControl',
+  [TokenType.LanguageConstant]: 'LanguageConstant',
+  [TokenType.KeywordReturn]: 'KeywordReturn',
 }
 
 const RE_SELECTOR = /^[\.a-zA-Z\d\-\:>]+/
@@ -58,8 +64,7 @@ const RE_STRING_DOUBLE_QUOTE_CONTENT = /^[^"]+/
 const RE_STRING_SINGLE_QUOTE_CONTENT = /^[^']+/
 const RE_STRING_BACKTICK_QUOTE_CONTENT = /^[^`]+/
 const RE_KEYWORD =
-  /^(?:while|when|var|val|typeof|typealias|try|true|throw|this|super|return|package|object|null|is|interface|in|if|fun|for|false|else|do|continue|class|break|as)\b/
-
+  /^(?:alias|and|begin|break|case|class|def|defined\?|do|else|elsif|end|ensure|false|for|if|in|module|next|nil|not|or|redo|rescue|retry|return|self|super|then|true|undef|unless|until|when|while|yield)\b/
 const RE_VARIABLE_NAME = /^[a-zA-Z\_\$]+/
 const RE_PUNCTUATION = /^[:,;\{\}\[\]\.=\(\)<>\-\|\&\+\?\!\%\*\/\@]/
 const RE_NUMERIC = /^\d+/
@@ -97,7 +102,32 @@ export const tokenizeLine = (line, lineState) => {
           token = TokenType.Whitespace
           state = State.TopLevelContent
         } else if ((next = part.match(RE_KEYWORD))) {
-          token = TokenType.Keyword
+          switch (next[0]) {
+            case 'break':
+            case 'case':
+            case 'do':
+            case 'elsif':
+            case 'else':
+            case 'for':
+            case 'if':
+            case 'in':
+            case 'then':
+            case 'while':
+            case 'end':
+              token = TokenType.KeywordControl
+              break
+            case 'true':
+            case 'false':
+            case 'nil':
+              token = TokenType.LanguageConstant
+              break
+            case 'return':
+              token = TokenType.KeywordReturn
+              break
+            default:
+              token = TokenType.Keyword
+              break
+          }
           state = State.TopLevelContent
         } else if ((next = part.match(RE_EOF_START))) {
           token = TokenType.Punctuation
