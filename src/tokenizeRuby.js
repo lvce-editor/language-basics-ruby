@@ -62,8 +62,8 @@ const RE_ANYTHING_UNTIL_CLOSE_BRACE = /^[^\}]+/
 const RE_QUOTE_DOUBLE = /^"/
 const RE_QUOTE_SINGLE = /^'/
 const RE_QUOTE_BACKTICK = /^`/
-const RE_STRING_DOUBLE_QUOTE_CONTENT = /^[^"]+/
-const RE_STRING_SINGLE_QUOTE_CONTENT = /^[^']+/
+const RE_STRING_DOUBLE_QUOTE_CONTENT = /^[^"\\]+/
+const RE_STRING_SINGLE_QUOTE_CONTENT = /^[^'\\]+/
 const RE_STRING_BACKTICK_QUOTE_CONTENT = /^[^`]+/
 const RE_KEYWORD =
   /^(?:alias|and|begin|break|case|class|def|defined\?|do|else|elsif|end|ensure|false|for|if|in|module|next|nil|not|or|redo|rescue|retry|return|self|super|then|true|undef|unless|until|when|while|yield)\b/
@@ -75,6 +75,7 @@ const RE_EOF_START = /^<<\-?\s*([\w\!]+)/
 const RE_EOF_CONTENT = /.*/s
 // const RE_REGEX = /^\/.+/
 const RE_REGEX = /^\/.*\//
+const RE_STRING_ESCAPE = /^\\./
 
 export const initialLineState = {
   state: State.TopLevelContent,
@@ -174,6 +175,9 @@ export const tokenizeLine = (line, lineState) => {
         } else if ((next = part.match(RE_STRING_DOUBLE_QUOTE_CONTENT))) {
           token = TokenType.String
           state = State.InsideDoubleQuoteString
+        } else if ((next = part.match(RE_STRING_ESCAPE))) {
+          token = TokenType.String
+          state = State.InsideDoubleQuoteString
         } else {
           throw new Error('no')
         }
@@ -183,6 +187,9 @@ export const tokenizeLine = (line, lineState) => {
           token = TokenType.PunctuationString
           state = State.TopLevelContent
         } else if ((next = part.match(RE_STRING_SINGLE_QUOTE_CONTENT))) {
+          token = TokenType.String
+          state = State.InsideSingleQuoteString
+        } else if ((next = part.match(RE_STRING_ESCAPE))) {
           token = TokenType.String
           state = State.InsideSingleQuoteString
         } else {
