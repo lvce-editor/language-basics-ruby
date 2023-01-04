@@ -70,7 +70,7 @@ const RE_STRING_BACKTICK_QUOTE_CONTENT = /^[^`]+/
 const RE_KEYWORD =
   /^(?:alias|and|begin|break|case|class|def|defined\?|do|else|elsif|end|ensure|false|for|if|in|module|next|nil|not|or|redo|require|rescue|retry|return|self|super|then|true|undef|unless|until|when|while|yield)\b/
 const RE_VARIABLE_NAME = /^[a-zA-Z\_\$]+/
-const RE_PUNCTUATION = /^[:,;\{\}\[\]\.=\(\)<>\-\|\&\+\?\!\%\*\/\@]/
+const RE_PUNCTUATION = /^[:,;\{\}\[\]\.=\(\)<>\-\|\&\+\?\!\%\*\/\@\~]/
 const RE_NUMERIC = /^\d+/
 const RE_LINE_COMMENT = /^#.*/s
 const RE_EOF_START = /^<<\-?\s*([\w\!]+)/
