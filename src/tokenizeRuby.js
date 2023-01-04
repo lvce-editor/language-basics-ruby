@@ -29,6 +29,7 @@ export const TokenType = {
   KeywordControl: 10,
   LanguageConstant: 11,
   KeywordReturn: 12,
+  Regex: 13,
 }
 
 export const TokenMap = {
@@ -44,6 +45,7 @@ export const TokenMap = {
   [TokenType.KeywordControl]: 'KeywordControl',
   [TokenType.LanguageConstant]: 'LanguageConstant',
   [TokenType.KeywordReturn]: 'KeywordReturn',
+  [TokenType.Regex]: 'Regex',
 }
 
 const RE_SELECTOR = /^[\.a-zA-Z\d\-\:>]+/
@@ -71,6 +73,8 @@ const RE_NUMERIC = /^\d+/
 const RE_LINE_COMMENT = /^#.*/s
 const RE_EOF_START = /^<<\-?\s*([\w\!]+)/
 const RE_EOF_CONTENT = /.*/s
+// const RE_REGEX = /^\/.+/
+const RE_REGEX = /^\/.*\//
 
 export const initialLineState = {
   state: State.TopLevelContent,
@@ -133,6 +137,9 @@ export const tokenizeLine = (line, lineState) => {
           token = TokenType.Punctuation
           state = State.InsideEof
           stringEnd = next[1]
+        } else if ((next = part.match(RE_REGEX))) {
+          token = TokenType.Regex
+          state = State.TopLevelContent
         } else if ((next = part.match(RE_PUNCTUATION))) {
           token = TokenType.Punctuation
           state = State.TopLevelContent
