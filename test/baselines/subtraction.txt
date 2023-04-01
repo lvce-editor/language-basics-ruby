@@ -1,4 +1,4 @@
-Numeric
+Function
 Whitespace
 Punctuation
 Whitespace
