@@ -2,6 +2,7 @@ require 'rubygems'
 require 'rake'
 require 'date'
 
+tests hello world
 #############################################################################
 #
 # Helper functions
@@ -25,6 +26,7 @@ def rubyforge_project
   name
 end
 
+rubyforge_project abc
 def gemspec_file
   "#{name}.gemspec"
 end

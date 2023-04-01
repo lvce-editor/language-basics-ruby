@@ -31,6 +31,7 @@ export const TokenType = {
   KeywordReturn: 12,
   Regex: 13,
   KeywordImport: 14,
+  FunctionName: 15,
 }
 
 export const TokenMap = {
@@ -48,6 +49,7 @@ export const TokenMap = {
   [TokenType.KeywordReturn]: 'KeywordReturn',
   [TokenType.Regex]: 'Regex',
   [TokenType.KeywordImport]: 'KeywordImport',
+  [TokenType.FunctionName]: 'Function',
 }
 
 const RE_SELECTOR = /^[\.a-zA-Z\d\-\:>]+/
@@ -78,6 +80,7 @@ const RE_EOF_CONTENT = /.*/s
 // const RE_REGEX = /^\/.+/
 const RE_REGEX = /^\/.*\//
 const RE_STRING_ESCAPE = /^\\./
+const RE_FUNCTION_CALL_NAME = /^[\w]+(?=(\s+(\"|\w|\-))|\(|!)/
 
 export const initialLineState = {
   state: State.TopLevelContent,
@@ -147,6 +150,9 @@ export const tokenizeLine = (line, lineState) => {
           token = TokenType.Punctuation
           state = State.InsideEof
           stringEnd = next[1]
+        } else if ((next = part.match(RE_FUNCTION_CALL_NAME))) {
+          token = TokenType.FunctionName
+          state = State.TopLevelContent
         } else if ((next = part.match(RE_REGEX))) {
           token = TokenType.Regex
           state = State.TopLevelContent
