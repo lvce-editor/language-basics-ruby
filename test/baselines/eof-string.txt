@@ -5,8 +5,7 @@ Whitespace
 Punctuation
 NewLine
 NewLine
+String
+NewLine
+NewLine
 Punctuation
-VariableName
-NewLine
-NewLine
-VariableName
