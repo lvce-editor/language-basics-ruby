@@ -28,7 +28,7 @@ NewLine
 Comment
 NewLine
 NewLine
-Keyword
+KeywordControl
 Whitespace
 VariableName
 NewLine
@@ -61,7 +61,7 @@ NewLine
 KeywordControl
 NewLine
 NewLine
-Keyword
+KeywordControl
 Whitespace
 VariableName
 NewLine
@@ -96,7 +96,7 @@ NewLine
 KeywordControl
 NewLine
 NewLine
-Keyword
+KeywordControl
 Whitespace
 VariableName
 NewLine
@@ -110,7 +110,7 @@ NewLine
 KeywordControl
 NewLine
 NewLine
-Keyword
+KeywordControl
 Whitespace
 VariableName
 NewLine
@@ -120,7 +120,7 @@ NewLine
 KeywordControl
 NewLine
 NewLine
-Keyword
+KeywordControl
 Whitespace
 VariableName
 NewLine
@@ -132,7 +132,7 @@ NewLine
 KeywordControl
 NewLine
 NewLine
-Keyword
+KeywordControl
 Whitespace
 VariableName
 NewLine
@@ -144,7 +144,7 @@ NewLine
 KeywordControl
 NewLine
 NewLine
-Keyword
+KeywordControl
 Whitespace
 VariableName
 Punctuation
@@ -333,7 +333,7 @@ NewLine
 KeywordControl
 NewLine
 NewLine
-Keyword
+KeywordControl
 Whitespace
 VariableName
 Punctuation
@@ -353,7 +353,7 @@ NewLine
 KeywordControl
 NewLine
 NewLine
-Keyword
+KeywordControl
 Whitespace
 VariableName
 Punctuation
@@ -745,7 +745,7 @@ KeywordControl
 NewLine
 NewLine
 NewLine
-Keyword
+KeywordControl
 Whitespace
 VariableName
 Punctuation

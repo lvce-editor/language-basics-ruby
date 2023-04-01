@@ -121,6 +121,7 @@ export const tokenizeLine = (line, lineState) => {
             case 'then':
             case 'while':
             case 'end':
+            case 'def':
             case 'begin':
             case 'rescue':
             case 'unless':
