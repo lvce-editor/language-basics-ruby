@@ -44,5 +44,6 @@
       "firstLine": "^#!\\s*/.*\\bruby\\b",
       "tokenize": "src/tokenizeRuby.js"
     }
-  ]
+  ],
+  "repository": "https://github.com/lvce-editor/language-basics-ruby"
 }
